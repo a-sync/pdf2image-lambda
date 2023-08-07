@@ -1,3 +1,2 @@
-chalice
 pdf2image
 boto3
