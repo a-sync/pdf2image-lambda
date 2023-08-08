@@ -34,3 +34,24 @@ The time taken for the Lambda to run, will depend on the size of the PDF documen
 For maximum flexibility, allow a 15 minute timeout, although experience suggests that the function should hardly ever take longer than a few seconds to run.  
 
 This can be set under the "Timeout" header in the "Basic settings" section of the Lambda function configuration tab.
+
+## CDK config example
+```ts
+
+const bucket = Bucket.fromBucketAttributes(this, 'Bucket', { bucketName: props.s3BucketName });
+
+const pdf2Image = new PythonFunction(this, 'Pdf2Image', {
+    functionName: 'pdf2-image',
+    description: 'Converts PDF files to imges',
+    entry: path.join(__dirname, '..', 'functions', 'pdf2image-lambda'),
+    index: 'index.py',
+    handler: 'pdf_to_image',
+    runtime: Runtime.PYTHON_3_11,
+    logRetention: RetentionDays.ONE_WEEK,
+    timeout: Duration.seconds(30),
+    memorySize: 2048
+});
+
+bucket.grantReadWrite(pdf2Image);
+bucket.addEventNotification(EventType.OBJECT_CREATED, new LambdaDestination(pdf2Image), { prefix: 'emails/parsed/', suffix: 'pdf' });
+```
