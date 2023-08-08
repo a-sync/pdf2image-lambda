@@ -1,7 +1,10 @@
 import boto3
 import logging
+import os
 from io import BytesIO
 from pdf2image import convert_from_bytes
+
+os.environ["LD_LIBRARY_PATH"] = "/var/task/vendor/lib:" + os.environ.get("LD_LIBRARY_PATH", "")
 
 DPI = 300
 FMT = "png" # ppm, jpeg, png, tiff
