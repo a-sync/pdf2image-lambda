@@ -30,7 +30,7 @@ def pdf_to_image(event, context):
     logging.info("Successfully retrieved S3 object.")
 
     # Set poppler path
-    poppler_path = "/var/task/lib/poppler-utils-0.26/usr/bin"
+    poppler_path = "/var/task/vendor/lib/poppler-utils-0.26/usr/bin"
     images = convert_from_bytes(infile, dpi=DPI, fmt=FMT, poppler_path=poppler_path)
     logging.info("Successfully converted pdf to image.")
 
