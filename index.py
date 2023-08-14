@@ -9,6 +9,12 @@ os.environ["LD_LIBRARY_PATH"] = "/var/task/vendor/lib:" + os.environ.get("LD_LIB
 DPI = 300
 FMT = "png" # ppm, jpeg, png, tiff
 _SUPPORTED_FILE_EXTENSION = '.pdf'
+MIME_TYPES = {
+    'png': 'image/png',
+    'jpeg': 'image/jpeg',
+    'tiff': 'image/tiff',
+    'ppm': 'image/x-portable-pixmap'
+}
 
 def pdf_to_image(event, context):
     """Take a pdf from an S3 bucket and convert it to a list of pillow images (one for each page of the pdf).
@@ -45,6 +51,8 @@ def pdf_to_image(event, context):
         buffer = BytesIO()
         image.save(buffer, FMT.upper())
         buffer.seek(0)
-        s3.Object(bucket_name, location).put(Body=buffer)
+
+        mime_type = MIME_TYPES.get(FMT, 'application/octet-stream')
+        s3.Object(bucket_name, location).put(Body=buffer, ContentType=mime_type)
 
     return f"PDF document ({object_key}) successfully converted to a series of images."
