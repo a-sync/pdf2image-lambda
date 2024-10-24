@@ -7,7 +7,7 @@ from pdf2image import convert_from_bytes
 os.environ["LD_LIBRARY_PATH"] = "/var/task/vendor/lib:" + os.environ.get("LD_LIBRARY_PATH", "")
 
 DPI = 300
-FMT = "png" # ppm, jpeg, png, tiff
+FMT = "png" # png, jpeg, tiff, ppm
 _SUPPORTED_FILE_EXTENSION = '.pdf'
 MIME_TYPES = {
     'png': 'image/png',
